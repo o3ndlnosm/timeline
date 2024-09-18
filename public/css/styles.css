@@ -1,0 +1,243 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f4f4f4;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* 內容水平居中 */
+}
+
+.timeline-container {
+    max-width: 90%; /* 可選：限制最大寬度為視口的90% */
+    margin: 0 auto;
+    overflow-x: auto;  /* 允許橫向滾動 */
+    overflow-y: hidden;  /* 禁止縱向滾動 */
+    white-space: nowrap;
+    margin-top: 20px;
+    flex-grow: 1; /* 讓時間軸容器佔據剩餘空間 */
+    padding: 0 80px;
+}
+
+#timeline {
+    display: block; /* 設置為塊級元素 */
+    height: 150px; /* 保持高度以顯示刻度和年份 */
+    border-top: 2px solid #000;
+    padding-left: 50px;   /* 增加左側 padding */
+    padding-right: 50px;  /* 增加右側 padding */
+}
+
+#ruler {
+    position: relative;
+    height: 40px;
+}
+
+#events {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    background-color: gray;
+    padding-left: 50px;   /* 增加左側 padding */
+    padding-right: 50px;  /* 增加右側 padding */
+}
+
+#search-form {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+#search-form input {
+    padding: 5px;
+    font-size: 16px;
+}
+
+#search-button {
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+#event-details {
+    margin: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    min-height: 50px;
+    text-align: center;
+    font-size: 18px;
+    display: none; /* 初始隱藏事件內容 */
+}
+
+/* 新增的重要時期和事件列表的容器 */
+#event-and-period-container {
+    display: flex; /* 讓重要時期和事件列表並排顯示 */
+    width: 100%;
+    justify-content: center;
+    gap: 20px; /* 添加區塊之間的間距 */
+}
+
+/* 重要時期的區塊 */
+#important-periods-container {
+    width: 300px; /* 設定寬度 */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-height: 400px; /* 設置最大高度 */
+    overflow-y: auto; /* 當內容超出時啟用滾動 */
+}
+
+#important-periods-container h3 {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* 重要時期列表 */
+#important-periods {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* 每個時期泡泡之間的間距 */
+}
+
+/* 重要時期列表項目的樣式 */
+.important-period-item {
+    padding: 5px 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+    transition: background-color 0.3s ease; /* 添加滑動效果 */
+}
+
+.important-period-item:hover {
+    background-color: #e0e0e0;  /* 滑鼠懸停時變色 */
+}
+
+/* 調整滾動條樣式（可選） */
+#important-periods-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+#important-periods-container::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+}
+
+#important-periods-container::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+.event-bubble {
+    position: absolute;
+    bottom: 10px; /* 讓事件泡泡與時間軸之間有一定距離 */
+    transform: translateX(-50%);
+    background-color: rgba(200, 200, 200, 0.9); /* 預設為灰色 */
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 14px;
+    white-space: nowrap;
+    text-align: center;
+    z-index: 10;
+    cursor: pointer;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* 保留過渡效果 */
+    opacity: 1;
+}
+
+.event-bubble.selected {
+    background-color: #54C3F1; /* 點擊後變為藍色 */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* 增加陰影效果 */
+}
+
+.event-connector {
+    position: absolute;
+    bottom: 0; /* 連接線的起點與時間軸對齊 */
+    height: 10px; /* 連接線的長度，確保不會遮擋事件泡泡 */
+    width: 2px; /* 連接線的寬度 */
+    background-color: #aaa; /* 預設為灰色 */
+    transform: translateX(-50%);
+    z-index: 5; /* 確保連接線在事件標記的下層 */
+    transition: background-color 0.3s ease; /* 添加基本動畫效果 */
+}
+
+.event-connector.selected {
+    background-color: #54C3F1; /* 點擊後變為藍色 */
+}
+
+#event-list-container {
+    width: 300px; /* 設定寬度 */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#event-list-container h3 {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+#event-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.event-list-item {
+    padding: 5px 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+    transition: background-color 0.3s ease; /* 添加滑動效果 */
+}
+
+.event-list-item:last-child {
+    border-bottom: none;
+}
+
+.event-list-item:hover {
+    background-color: #f0f0f0;
+}
+
+.period-bubble {
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease, width 0.3s ease;  /* 增加過渡效果 */
+    white-space: nowrap; /* 預設不換行，並使用省略號 */
+    overflow: hidden;    /* 隱藏超出部分 */
+    text-overflow: ellipsis; /* 超過寬度顯示省略號 */
+}
+
+.period-bubble:hover {
+    background-color: #ccc;
+}
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7); /* 半透明白色背景 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* 將內容垂直排列 */
+    z-index: 9999;
+}
+
+#loading-overlay p {
+    font-size: 18px;
+    color: #333;
+    margin-top: 10px; /* 添加一點間距，讓文字與圖片分開 */
+}

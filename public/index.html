@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>擴展年份時間軸</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div id="loading-overlay">
+        <img src="https://img.soogif.com/bv8B814MMxvPM1HZaf2eZeMd1uwUKIx1.gif_s200x0" alt="載入中...">
+        <p>載入中，請稍候...</p>
+</div>
+    
+
+<div id="search-form">
+    <input type="text" id="search-input" placeholder="搜尋事件" />
+    <button id="search-button">搜尋</button>
+</div>
+
+<div id="event-and-period-container">
+    <div id="important-periods-container">
+        <h3>重要時期</h3>
+        <div id="important-periods"></div>
+    </div>
+    <div id="event-list-container">
+        <h3>事件列表</h3>
+        <div id="event-list"></div>
+    </div>
+</div>
+
+<div id="event-details"></div> <!-- 用於展示事件內容 -->
+
+<div class="timeline-container">
+    <div id="events"></div>
+    <div id="timeline">
+        <div id="ruler"></div>
+    </div>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
